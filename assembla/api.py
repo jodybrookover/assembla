@@ -288,7 +288,7 @@ class Event(AssemblaObject):
 class Space(AssemblaObject):
     rel_path = 'spaces'
 
-    @assembla_filter
+@assembla_filter
     def tickets(self, extra_params=None):
         """
         All Tickets in this Space
@@ -296,7 +296,7 @@ class Space(AssemblaObject):
 
         # Default params
         params = {
-            'per_page': 1000,
+            'per_page': 100,
             'report': 0,  # Report 0 is all tickets
         }
 
@@ -316,11 +316,21 @@ class Space(AssemblaObject):
         """
         All Milestones in this Space
         """
+
+        # Default params
+        params = {
+            'per_page': 100,
+            'report': 0,  # Report 0 is all tickets
+        }
+
+        if extra_params:
+            params.update(extra_params)
+
         return self.api._get_json(
             Milestone,
             space=self,
             rel_path=self._build_rel_path('milestones/all'),
-            extra_params=extra_params,
+            extra_params=params,
         )
 
     @assembla_filter
